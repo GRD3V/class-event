@@ -4,6 +4,7 @@ type EventListener<T> = (e: T) => void | Promise<void>;
 type ClassEventKVMap = {
   maxEventBeforeWarn: number;
   maxEventListeners: number;
+  [key: string]: unknown;
 };
 
 export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
