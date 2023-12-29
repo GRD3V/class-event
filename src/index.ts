@@ -48,7 +48,7 @@ export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
   }
 
   public off<Key extends keyof EventMap>(
-    eventName: keyof EventMap,
+    eventName: Key,
     listener: EventListener<EventMap[Key]>
   ) {
     const eventListenerList = this.listenerList[eventName];
