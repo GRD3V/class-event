@@ -1,29 +1,18 @@
-import { KVMap } from "kvmap";
 type EventListener<T> = (e: T) => void | Promise<void>;
 
-type ClassEventKVMap = {
-  maxEventBeforeWarn: number;
-  maxEventListeners: number;
-  [key: string]: unknown;
-};
+export class ClassEvent<EventMap> {
+  private _maxEventBeforeWarn: number = 10;
+  private _maxEventListeners: number = 0;
 
-export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
   private listenerList: {
     [key in keyof EventMap]?: EventListener<any>[];
   } = {};
   private warnIssuedFor: { [key in keyof EventMap]?: true } = {};
 
-  constructor() {
-    super({
-      maxEventBeforeWarn: 10,
-      maxEventListeners: 0,
-    });
-  }
-
   public on<Key extends keyof EventMap>(
     eventName: Key,
     listener: EventListener<EventMap[Key]>
-  ) {
+  ): ClassEvent<EventMap> {
     if (!this.listenerList[eventName]) this.listenerList[eventName] = [];
 
     const isMaxListenner =
@@ -50,7 +39,7 @@ export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
   public off<Key extends keyof EventMap>(
     eventName: Key,
     listener: EventListener<EventMap[Key]>
-  ) {
+  ): ClassEvent<EventMap> {
     const eventListenerList = this.listenerList[eventName];
     if (eventListenerList) {
       const even = (l: EventListener<EventMap[Key]>) => l === listener;
@@ -60,7 +49,10 @@ export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
     return this;
   }
 
-  protected emit<Key extends keyof EventMap>(eventName: Key, e: EventMap[Key]) {
+  protected emit<Key extends keyof EventMap>(
+    eventName: Key,
+    e: EventMap[Key]
+  ): ClassEvent<EventMap> {
     const eventListenerList = this.listenerList[eventName];
     if (eventListenerList) {
       eventListenerList.forEach((listener) => {
@@ -70,7 +62,7 @@ export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
     return this;
   }
 
-  private checkEventList(eventName: keyof EventMap) {
+  private checkEventList(eventName: keyof EventMap): void {
     const eventListenerList = this.listenerList[eventName];
     if (
       eventListenerList &&
@@ -86,11 +78,27 @@ export class ClassEvent<EventMap> extends KVMap<ClassEventKVMap> {
     }
   }
 
-  private get maxEventBeforeWarn() {
-    return this.get("maxEventBeforeWarn") ?? 10;
+  public get maxEventBeforeWarn(): number {
+    return this._maxEventBeforeWarn;
+  }
+  public set maxEventBeforeWarn(v: number) {
+    if (!isPositiveInteger(v)) {
+      throw new Error("Value is not a valid number");
+    }
+    this._maxEventBeforeWarn = v;
   }
 
-  private get maxEventListeners() {
-    return this.get("maxEventListeners") ?? 0;
+  public get maxEventListeners(): number {
+    return this._maxEventListeners;
   }
+  public set maxEventListeners(v: number) {
+    if (!isPositiveInteger(v)) {
+      throw new Error("Value is not a valid number");
+    }
+    this._maxEventListeners = v;
+  }
+}
+
+function isPositiveInteger(n: number): boolean {
+  return typeof n === "number" && isFinite(n) && !isNaN(n) && n >= 0;
 }

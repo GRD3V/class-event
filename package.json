@@ -1,9 +1,12 @@
 {
   "name": "class-event",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "license": "MIT",
   "homepage": "https://github.com/GRD3V/class-event",
-  "repository": "git@github.com:GRD3V/class-event.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GRD3V/class-event.git"
+  },
   "keywords": [
     "events",
     "eventListeners",
@@ -41,7 +44,5 @@
     "unbuild": "^2.0.0",
     "vitest": "^0.34.6"
   },
-  "dependencies": {
-    "kvmap": "^1.0.0"
-  }
+  "dependencies": {}
 }

@@ -63,7 +63,7 @@ describe("ClassEvent class", () => {
     const handler_move4 = vi.fn();
 
     // Arrange
-    point.set("maxEventListeners", 3);
+    point.maxEventListeners = 3;
     point.on("move", handler_move1);
     point.on("move", handler_move2);
     point.on("move", handler_move3);
