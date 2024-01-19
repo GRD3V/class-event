@@ -10,7 +10,7 @@ npm install class-event
 
 ---
 
-## Use `custom-event` with `Javascript` & `JSDoc`
+## Use `class-event` with `Javascript` & `JSDoc`
 
 ```javascript
 // @ts-check
@@ -65,7 +65,7 @@ point.reset();
 
 ---
 
-## Use `custom-event` with `Typescript`
+## Use `class-event` with `Typescript`
 
 ```typescript
 import { ClassEvent } from "class-event";
