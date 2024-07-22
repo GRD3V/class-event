@@ -16,6 +16,11 @@ class Point extends ClassEvent {
   x = 0;
   Y = 0;
 
+  /**
+   *
+   * @param {number} x
+   * @param {number} y
+   */
   move(x, y) {
     this.emit("move", { x, y });
   }
